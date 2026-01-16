@@ -5,7 +5,7 @@
   --bg-alt: #ece4d7;
   --text: #1f2328;
   --muted: #5c6470;
-  --accent: #c9774b;
+  --accent: #1d4f8f;
   --line: rgba(31, 35, 40, 0.16);
   --panel: rgba(255, 255, 255, 0.65);
   --shadow: 0 24px 60px rgba(31, 35, 40, 0.14);
@@ -16,7 +16,7 @@ body[data-theme="dark"] {
   --bg-alt: #141c26;
   --text: #f2f4f7;
   --muted: #b1bac6;
-  --accent: #e2a56f;
+  --accent: #4c7ac7;
   --line: rgba(242, 244, 247, 0.16);
   --panel: rgba(16, 22, 30, 0.7);
   --shadow: 0 26px 70px rgba(0, 0, 0, 0.45);
@@ -42,8 +42,8 @@ body::before {
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(900px 600px at 85% 15%, rgba(201, 119, 75, 0.18), transparent 55%),
-    radial-gradient(800px 600px at 10% 90%, rgba(79, 117, 162, 0.18), transparent 55%),
+    radial-gradient(900px 600px at 85% 15%, rgba(29, 79, 143, 0.2), transparent 55%),
+    radial-gradient(800px 600px at 10% 90%, rgba(24, 62, 120, 0.2), transparent 55%),
     linear-gradient(rgba(31, 35, 40, 0.07) 1px, transparent 1px),
     linear-gradient(90deg, rgba(31, 35, 40, 0.07) 1px, transparent 1px);
   background-size: auto, auto, 56px 56px, 56px 56px;
@@ -54,8 +54,8 @@ body::before {
 
 body[data-theme="dark"]::before {
   background:
-    radial-gradient(900px 600px at 80% 10%, rgba(226, 165, 111, 0.25), transparent 60%),
-    radial-gradient(800px 600px at 10% 85%, rgba(73, 122, 168, 0.25), transparent 60%),
+    radial-gradient(900px 600px at 80% 10%, rgba(76, 122, 199, 0.28), transparent 60%),
+    radial-gradient(800px 600px at 10% 85%, rgba(38, 74, 132, 0.3), transparent 60%),
     linear-gradient(rgba(242, 244, 247, 0.06) 1px, transparent 1px),
     linear-gradient(90deg, rgba(242, 244, 247, 0.06) 1px, transparent 1px);
   background-size: auto, auto, 64px 64px, 64px 64px;
@@ -169,6 +169,7 @@ main {
 }
 
 .hero {
+  position: relative;
   min-height: 100vh;
   padding: 5.5rem 5vw 4rem;
   display: grid;
@@ -240,12 +241,28 @@ body.loaded .hero-left > *:nth-child(5) {
   transform: translateY(-1px);
 }
 
-.scroll-hint {
-  margin-top: 2.5rem;
+.scroll-indicator {
+  position: absolute;
+  left: 50%;
+  bottom: 5.6rem;
+  transform: translate(-50%, 0);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
   font-size: 0.75rem;
   letter-spacing: 0.4em;
   text-transform: uppercase;
   color: var(--muted);
+  pointer-events: none;
+}
+
+.scroll-arrow {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid var(--muted);
   animation: float 2s ease-in-out infinite;
 }
 
@@ -395,6 +412,10 @@ body.loaded .hero-left > *:nth-child(5) {
 
   .hero-right {
     order: 2;
+  }
+
+  .scroll-indicator {
+    bottom: 4.9rem;
   }
 }
 
