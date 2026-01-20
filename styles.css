@@ -24,6 +24,17 @@ body[data-theme="dark"] {
   --shadow: 0 26px 70px rgba(0, 0, 0, 0.45);
 }
 
+body[data-theme="dark"] .theme-toggle {
+  background: linear-gradient(120deg, rgba(91, 182, 255, 0.32), rgba(194, 75, 255, 0.3));
+  border-color: rgba(91, 182, 255, 0.55);
+}
+
+body[data-theme="dark"] .theme-toggle:hover,
+body[data-theme="dark"] .theme-toggle:focus-visible {
+  background: linear-gradient(120deg, rgba(91, 182, 255, 0.5), rgba(194, 75, 255, 0.45));
+  border-color: rgba(91, 182, 255, 0.8);
+}
+
 *,
 *::before,
 *::after {
@@ -174,11 +185,18 @@ a {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--text);
-  background: transparent;
-  border: 1px solid var(--line);
+  background: linear-gradient(120deg, rgba(91, 182, 255, 0.18), rgba(194, 75, 255, 0.16));
+  border: 1px solid rgba(91, 182, 255, 0.35);
   padding: 0.25rem 0.55rem;
   border-radius: 999px;
   cursor: pointer;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  background: linear-gradient(120deg, rgba(91, 182, 255, 0.3), rgba(194, 75, 255, 0.28));
+  border-color: rgba(91, 182, 255, 0.6);
 }
 
 .toggle-track {
@@ -312,6 +330,25 @@ body.loaded .hero-left > *:nth-child(3) {
   line-height: 1.6;
   color: var(--muted);
   font-weight: 300;
+}
+
+.email-link {
+  font-weight: 400;
+  text-decoration: none;
+  background: linear-gradient(120deg, #5bb6ff, #8b6bff 55%, #c24bff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transition: filter 0.2s ease;
+  text-decoration: underline;
+  text-decoration-color: rgba(139, 107, 255, 0.7);
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+.email-link:hover,
+.email-link:focus-visible {
+  filter: brightness(1.2);
 }
 
 .scroll-indicator {
