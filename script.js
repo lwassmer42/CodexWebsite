@@ -155,3 +155,55 @@ if (driftLayer && motionSafe) {
   const initialDelay = 1500 + Math.random() * 2000;
   setTimeout(spawnDriftItem, initialDelay);
 }
+
+const playButtons = document.querySelectorAll(".play-toggle");
+if (playButtons.length > 0) {
+  const stopAllAudio = () => {
+    document.querySelectorAll(".yt-audio-frame").forEach((frame) => frame.remove());
+    playButtons.forEach((button) => {
+      button.setAttribute("aria-pressed", "false");
+      const label = button.querySelector(".play-label");
+      if (label) {
+        label.textContent = "Play";
+      }
+    });
+  };
+
+  playButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const videoId = button.dataset.youtubeId;
+      if (!videoId) {
+        return;
+      }
+
+      const item = button.closest(".feature-item");
+      const existingFrame = item ? item.querySelector(".yt-audio-frame") : null;
+
+      if (existingFrame) {
+        stopAllAudio();
+        return;
+      }
+
+      stopAllAudio();
+      const iframe = document.createElement("iframe");
+      iframe.className = "yt-audio-frame";
+      iframe.setAttribute("title", "YouTube audio player");
+      iframe.setAttribute("aria-hidden", "true");
+      iframe.setAttribute("allow", "autoplay; encrypted-media");
+      iframe.setAttribute(
+        "src",
+        `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&modestbranding=1&playsinline=1&rel=0`
+      );
+      iframe.setAttribute("loading", "lazy");
+      if (item) {
+        item.appendChild(iframe);
+      }
+
+      button.setAttribute("aria-pressed", "true");
+      const label = button.querySelector(".play-label");
+      if (label) {
+        label.textContent = "Stop";
+      }
+    });
+  });
+}
