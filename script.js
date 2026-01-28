@@ -168,6 +168,10 @@ if (playButtons.length > 0) {
     if (label) {
       label.textContent = "Play";
     }
+    const icon = button.querySelector(".play-icon");
+    if (icon) {
+      icon.textContent = "▶";
+    }
   };
 
   const stopAudio = () => {
@@ -202,6 +206,11 @@ if (playButtons.length > 0) {
       currentButton = button;
       button.setAttribute("aria-pressed", "true");
       button.classList.add("is-playing");
+
+      const icon = button.querySelector(".play-icon");
+      if (icon) {
+        icon.textContent = "■";
+      }
 
       const label = button.querySelector(".play-label");
       if (label) {

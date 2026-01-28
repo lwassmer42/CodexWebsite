@@ -658,6 +658,10 @@ body.loaded .hero-left > *:nth-child(3) {
   font-size: 0.85rem;
 }
 
+.play-toggle.is-playing .play-icon {
+  font-size: 0.95rem;
+}
+
 .columns {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
