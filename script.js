@@ -1,34 +1,76 @@
 const storageKey = "theme";
+const iuModeKey = "iu-mode";
 const toggle = document.getElementById("theme-toggle");
+const iuToggle = document.getElementById("iu-toggle");
 const stateLabel = document.getElementById("theme-state");
 const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+let iuMode = localStorage.getItem(iuModeKey) === "true";
+let spawnDriftItemNow = null;
 
-function applyTheme(mode, persist = true) {
-  document.body.dataset.theme = mode;
+const updateModeLabel = (mode) => {
   toggle.setAttribute("aria-pressed", mode === "dark");
-  stateLabel.textContent = mode === "dark" ? "DARK" : "LIGHT";
+  stateLabel.textContent = mode === "dark" ? "DARK" : mode === "iu" ? "IU" : "LIGHT";
+};
+
+const applyBaseTheme = (mode, persist = true) => {
+  document.body.dataset.theme = mode;
+  updateModeLabel(mode);
   if (persist) {
     localStorage.setItem(storageKey, mode);
   }
-}
+};
+
+const setIuMode = (enabled, persist = true) => {
+  iuMode = enabled;
+  if (iuToggle) {
+    iuToggle.setAttribute("aria-pressed", enabled);
+  }
+
+  if (enabled) {
+    document.body.dataset.theme = "iu";
+    updateModeLabel("iu");
+    if (spawnDriftItemNow) {
+      spawnDriftItemNow();
+    }
+  } else {
+    const storedTheme = localStorage.getItem(storageKey);
+    const baseTheme = storedTheme || (prefersDark.matches ? "dark" : "light");
+    applyBaseTheme(baseTheme, false);
+  }
+
+  if (persist) {
+    localStorage.setItem(iuModeKey, enabled ? "true" : "false");
+  }
+};
 
 const storedTheme = localStorage.getItem(storageKey);
-if (storedTheme) {
-  applyTheme(storedTheme, true);
+const initialTheme = storedTheme || (prefersDark.matches ? "dark" : "light");
+if (iuMode) {
+  setIuMode(true, false);
 } else {
-  applyTheme(prefersDark.matches ? "dark" : "light", false);
+  applyBaseTheme(initialTheme, false);
 }
 
 prefersDark.addEventListener("change", (event) => {
-  if (!localStorage.getItem(storageKey)) {
-    applyTheme(event.matches ? "dark" : "light", false);
+  if (!localStorage.getItem(storageKey) && !iuMode) {
+    applyBaseTheme(event.matches ? "dark" : "light", false);
   }
 });
 
 toggle.addEventListener("click", () => {
+  if (iuMode) {
+    setIuMode(false, true);
+    return;
+  }
   const nextMode = document.body.dataset.theme === "dark" ? "light" : "dark";
-  applyTheme(nextMode, true);
+  applyBaseTheme(nextMode, true);
 });
+
+if (iuToggle) {
+  iuToggle.addEventListener("click", () => {
+    setIuMode(!iuMode, true);
+  });
+}
 
 window.addEventListener("load", () => {
   document.body.classList.add("loaded");
@@ -37,9 +79,13 @@ window.addEventListener("load", () => {
 const portrait = document.querySelector(".portrait");
 if (portrait) {
   const noteGlyphs = ["♪", "♫", "♩"];
-  const noteColors = ["#5bb6ff", "#8b6bff", "#c24bff"];
+  const defaultNoteColors = ["#5bb6ff", "#8b6bff", "#c24bff"];
+  const iuNoteColors = ["#990000", "#edebeb", "#b31217"];
+  const getNoteColors = () =>
+    document.body.dataset.theme === "iu" ? iuNoteColors : defaultNoteColors;
 
   portrait.addEventListener("click", () => {
+    const noteColors = getNoteColors();
     if (portrait.pulseTimeout) {
       clearTimeout(portrait.pulseTimeout);
     }
@@ -118,29 +164,43 @@ if (driftLayer && motionSafe) {
     "notes = [\"C\", \"G\", \"A\"]; print(notes)"
   ];
   const driftNotes = ["♪", "♫", "♩"];
+  const iuChants = ["GO IU!!", "HOOSIERS!!", "HOO HOO HOOSIERS!"];
 
   const spawnDriftItem = () => {
     const item = document.createElement("span");
-    const roll = Math.random();
+    const isIU = document.body.dataset.theme === "iu";
     let text = "";
-    if (roll < 0.34) {
-      text = driftNotes[Math.floor(Math.random() * driftNotes.length)];
-      item.className = "drift-item drift-note";
-    } else if (roll < 0.67) {
-      text = sqlSnippets[Math.floor(Math.random() * sqlSnippets.length)];
-      item.className = "drift-item drift-sql";
+    if (isIU) {
+      text = iuChants[Math.floor(Math.random() * iuChants.length)];
+      item.className = "drift-item drift-iu";
+      const trident = document.createElement("img");
+      trident.src = "_Pictures/White_Trident.png";
+      trident.alt = "";
+      trident.className = "iu-drift-trident";
+      item.appendChild(trident);
     } else {
-      text = pySnippets[Math.floor(Math.random() * pySnippets.length)];
-      item.className = "drift-item drift-py";
+      const roll = Math.random();
+      if (roll < 0.34) {
+        text = driftNotes[Math.floor(Math.random() * driftNotes.length)];
+        item.className = "drift-item drift-note";
+      } else if (roll < 0.67) {
+        text = sqlSnippets[Math.floor(Math.random() * sqlSnippets.length)];
+        item.className = "drift-item drift-sql";
+      } else {
+        text = pySnippets[Math.floor(Math.random() * pySnippets.length)];
+        item.className = "drift-item drift-py";
+      }
     }
 
-    const color = driftColors[Math.floor(Math.random() * driftColors.length)];
     const left = Math.random() * 100;
     const driftX = (Math.random() * 2 - 1) * 40;
 
     item.textContent = text;
     item.style.left = `${left}%`;
-    item.style.color = color;
+    if (!isIU) {
+      const color = driftColors[Math.floor(Math.random() * driftColors.length)];
+      item.style.color = color;
+    }
     item.style.setProperty("--drift-x", `${driftX}px`);
     driftLayer.appendChild(item);
 
@@ -148,13 +208,29 @@ if (driftLayer && motionSafe) {
       item.remove();
     }, 16500);
 
-    const delay = 6500 + Math.random() * 8000;
+    const delay = isIU ? 2200 + Math.random() * 2500 : 6500 + Math.random() * 8000;
     setTimeout(spawnDriftItem, delay);
   };
 
   const initialDelay = 1500 + Math.random() * 2000;
   setTimeout(spawnDriftItem, initialDelay);
+  spawnDriftItemNow = spawnDriftItem;
 }
+
+document.addEventListener("keydown", (event) => {
+  if (!event.ctrlKey || event.key.toLowerCase() !== "i") {
+    return;
+  }
+
+  const target = event.target;
+  const tag = target && target.tagName;
+  if (target && (target.isContentEditable || tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT")) {
+    return;
+  }
+
+  event.preventDefault();
+  setIuMode(!iuMode, true);
+});
 
 const playButtons = document.querySelectorAll(".play-toggle");
 if (playButtons.length > 0) {
