@@ -158,52 +158,65 @@ if (driftLayer && motionSafe) {
 
 const playButtons = document.querySelectorAll(".play-toggle");
 if (playButtons.length > 0) {
-  const stopAllAudio = () => {
-    document.querySelectorAll(".yt-audio-frame").forEach((frame) => frame.remove());
-    playButtons.forEach((button) => {
-      button.setAttribute("aria-pressed", "false");
-      const label = button.querySelector(".play-label");
-      if (label) {
-        label.textContent = "Play";
-      }
-    });
+  let currentAudio = null;
+  let currentButton = null;
+
+  const resetButton = (button) => {
+    button.setAttribute("aria-pressed", "false");
+    button.classList.remove("is-playing");
+    const label = button.querySelector(".play-label");
+    if (label) {
+      label.textContent = "Play";
+    }
+  };
+
+  const stopAudio = () => {
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+      currentAudio = null;
+    }
+    if (currentButton) {
+      resetButton(currentButton);
+      currentButton = null;
+    }
   };
 
   playButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      const videoId = button.dataset.youtubeId;
-      if (!videoId) {
+      const src = button.dataset.audioSrc;
+      if (!src) {
         return;
       }
 
-      const item = button.closest(".feature-item");
-      const existingFrame = item ? item.querySelector(".yt-audio-frame") : null;
-
-      if (existingFrame) {
-        stopAllAudio();
+      if (currentButton === button) {
+        stopAudio();
         return;
       }
 
-      stopAllAudio();
-      const iframe = document.createElement("iframe");
-      iframe.className = "yt-audio-frame";
-      iframe.setAttribute("title", "YouTube audio player");
-      iframe.setAttribute("aria-hidden", "true");
-      iframe.setAttribute("allow", "autoplay; encrypted-media");
-      iframe.setAttribute(
-        "src",
-        `https://www.youtube.com/embed/${videoId}?autoplay=1&controls=0&modestbranding=1&playsinline=1&rel=0`
-      );
-      iframe.setAttribute("loading", "lazy");
-      if (item) {
-        item.appendChild(iframe);
-      }
+      stopAudio();
 
+      const audio = new Audio(src);
+      audio.preload = "metadata";
+      currentAudio = audio;
+      currentButton = button;
       button.setAttribute("aria-pressed", "true");
+      button.classList.add("is-playing");
+
       const label = button.querySelector(".play-label");
       if (label) {
         label.textContent = "Stop";
       }
+
+      audio.addEventListener("ended", () => {
+        if (currentButton === button) {
+          stopAudio();
+        }
+      });
+
+      audio.play().catch(() => {
+        stopAudio();
+      });
     });
   });
 }

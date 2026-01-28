@@ -392,6 +392,7 @@ body.loaded .hero-left > *:nth-child(3) {
   background-size: 200% 200%;
   transition: background 0.3s ease, transform 0.3s ease;
   overflow: visible;
+  cursor: pointer;
 }
 
 .portrait img {
@@ -543,6 +544,7 @@ body.loaded .hero-left > *:nth-child(3) {
   display: flex;
   gap: 1.2rem;
   align-items: center;
+  min-height: 6.5rem;
 }
 
 .feature-card h3 {
@@ -568,7 +570,7 @@ body.loaded .hero-left > *:nth-child(3) {
 }
 
 .feature-thumb.music {
-  background: linear-gradient(135deg, rgba(255, 151, 91, 0.3), rgba(255, 94, 98, 0.24));
+  background: linear-gradient(135deg, rgba(10, 62, 54, 0.9), rgba(26, 108, 186, 0.65));
 }
 
 .feature-thumb svg {
@@ -589,7 +591,7 @@ body.loaded .hero-left > *:nth-child(3) {
   position: relative;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   gap: 1rem;
   padding: 0.9rem 0;
 }
@@ -607,6 +609,7 @@ body.loaded .hero-left > *:nth-child(3) {
   margin: 0;
   font-size: 0.95rem;
   color: var(--muted);
+  min-height: 3.2rem;
 }
 
 .feature-item-actions {
@@ -653,14 +656,6 @@ body.loaded .hero-left > *:nth-child(3) {
 
 .play-icon {
   font-size: 0.85rem;
-}
-
-.yt-audio-frame {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  pointer-events: none;
 }
 
 .columns {
