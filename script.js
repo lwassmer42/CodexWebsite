@@ -174,7 +174,7 @@ if (driftLayer && motionSafe) {
       text = iuChants[Math.floor(Math.random() * iuChants.length)];
       item.className = "drift-item drift-iu";
       const trident = document.createElement("img");
-      trident.src = "_Pictures/White_Trident.png";
+      trident.src = "Pictures_/White_Trident.png";
       trident.alt = "";
       trident.className = "iu-drift-trident";
       item.appendChild(trident);
