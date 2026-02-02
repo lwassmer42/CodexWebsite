@@ -316,6 +316,7 @@ body[data-theme="iu"] .iu-easter {
 .theme-toggle {
   display: inline-flex;
   align-items: center;
+  justify-content: space-between;
   gap: 0.45rem;
   font-size: 0.65rem;
   letter-spacing: 0.16em;
@@ -324,6 +325,7 @@ body[data-theme="iu"] .iu-easter {
   background: linear-gradient(120deg, rgba(91, 182, 255, 0.18), rgba(194, 75, 255, 0.16));
   border: 1px solid rgba(91, 182, 255, 0.35);
   padding: 0.25rem 0.55rem;
+  min-width: 8.6rem;
   border-radius: 999px;
   cursor: pointer;
   transition: border-color 0.3s ease, background 0.3s ease;
@@ -378,6 +380,12 @@ body[data-theme="iu"] .iu-toggle-chip {
   border-radius: 999px;
   background: var(--panel);
   border: 1px solid var(--line);
+}
+
+.toggle-state {
+  display: inline-block;
+  width: 5ch;
+  text-align: left;
 }
 
 .toggle-thumb {
