@@ -2,6 +2,7 @@ const storageKey = "theme";
 const iuModeKey = "iu-mode";
 const toggle = document.getElementById("theme-toggle");
 const iuToggle = document.getElementById("iu-toggle");
+const iuInline = document.getElementById("iu-inline");
 const stateLabel = document.getElementById("theme-state");
 const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
 let iuMode = localStorage.getItem(iuModeKey) === "true";
@@ -69,6 +70,19 @@ toggle.addEventListener("click", () => {
 if (iuToggle) {
   iuToggle.addEventListener("click", () => {
     setIuMode(!iuMode, true);
+  });
+}
+
+if (iuInline) {
+  iuInline.addEventListener("click", () => {
+    if (iuMode) {
+      setIuMode(false, true);
+      applyBaseTheme("dark", true);
+      return;
+    }
+    if (window.confirm("Do you want to enter IU mode?")) {
+      setIuMode(true, true);
+    }
   });
 }
 
