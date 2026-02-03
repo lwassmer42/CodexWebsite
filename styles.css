@@ -1331,6 +1331,10 @@ body[data-theme="iu"] .end-links .link-sep {
 }
 
 @media (max-width: 640px) {
+  .scroll-indicator {
+    bottom: 1.8rem;
+  }
+
   .site-header {
     flex-direction: column;
     align-items: center;
