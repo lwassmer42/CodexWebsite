@@ -1375,20 +1375,46 @@ body[data-theme="iu"] .end-links .link-sep {
   }
 
   .name {
+    background: none;
+    color: var(--text);
+    text-shadow: none;
+  }
+
+  body[data-theme="iu"] .name {
+    color: #990000;
+  }
+
+  .name-first,
+  .name-last {
     background: linear-gradient(120deg, #5bb6ff 10%, #8b6bff 55%, #c24bff 90%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     -webkit-text-fill-color: transparent;
+  }
+
+  .name-first {
     text-shadow: 0 0 12px rgba(91, 182, 255, 0.45), 0 0 18px rgba(194, 75, 255, 0.35);
   }
 
-  body[data-theme="iu"] .name {
+  .name-last {
+    text-shadow: 0 0 12px rgba(139, 107, 255, 0.45), 0 0 18px rgba(194, 75, 255, 0.35);
+  }
+
+  body[data-theme="iu"] .name-first,
+  body[data-theme="iu"] .name-last {
     background: linear-gradient(120deg, #990000 15%, #b31217 60%, #edebeb 95%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     -webkit-text-fill-color: transparent;
+  }
+
+  body[data-theme="iu"] .name-first {
+    text-shadow: 0 0 12px rgba(153, 0, 0, 0.45), 0 0 16px rgba(237, 235, 235, 0.35);
+  }
+
+  body[data-theme="iu"] .name-last {
     text-shadow: 0 0 12px rgba(153, 0, 0, 0.45), 0 0 16px rgba(237, 235, 235, 0.35);
   }
 
