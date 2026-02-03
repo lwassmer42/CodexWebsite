@@ -272,6 +272,34 @@ body[data-theme="iu"] .iu-easter {
   font-family: var(--font-display);
   font-size: 1.2rem;
   letter-spacing: 0.08em;
+  text-decoration: none;
+  background: linear-gradient(120deg, rgba(91, 182, 255, 0.95), rgba(194, 75, 255, 0.95));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  --brand-glow-a: rgba(91, 182, 255, 0.5);
+  --brand-glow-b: rgba(194, 75, 255, 0.45);
+  transition: text-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.brand:hover,
+.brand:focus-visible {
+  filter: brightness(1.05);
+  text-shadow: 0 0 12px var(--brand-glow-a), 0 0 18px var(--brand-glow-b);
+}
+
+.brand:active,
+.brand:focus-visible {
+  text-shadow: 0 0 16px var(--brand-glow-a), 0 0 22px var(--brand-glow-b);
+}
+
+body[data-theme="iu"] .brand {
+  background: linear-gradient(120deg, rgba(153, 0, 0, 0.98), rgba(76, 0, 0, 0.98));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  --brand-glow-a: rgba(153, 0, 0, 0.6);
+  --brand-glow-b: rgba(237, 235, 235, 0.45);
 }
 
 .header-right {
@@ -716,6 +744,20 @@ body[data-theme="iu"] .portrait::after {
   margin: 0;
 }
 
+.work-showcase .section-head h2 {
+  background: linear-gradient(120deg, rgba(91, 182, 255, 0.95), rgba(194, 75, 255, 0.95));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+body[data-theme="iu"] .work-showcase .section-head h2 {
+  background: linear-gradient(120deg, rgba(153, 0, 0, 0.98), rgba(76, 0, 0, 0.98));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 .content p {
   font-size: 1.05rem;
   line-height: 1.7;
@@ -727,6 +769,18 @@ body[data-theme="iu"] .portrait::after {
   margin: 0;
   font-size: 1.1rem;
   max-width: 46rem;
+}
+
+.section-head .inline-link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.section-head .inline-link:hover,
+.section-head .inline-link:focus-visible {
+  text-decoration-thickness: 2px;
 }
 
 .feature-grid {
@@ -750,6 +804,9 @@ body[data-theme="iu"] .portrait::after {
   overflow: hidden;
   min-height: 360px;
   aspect-ratio: 1 / 1;
+  --glow-a: rgba(91, 182, 255, 0.4);
+  --glow-b: rgba(194, 75, 255, 0.35);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .feature-card::before {
@@ -757,9 +814,49 @@ body[data-theme="iu"] .portrait::after {
   position: absolute;
   inset: -50% -30% auto;
   height: 70%;
-  background: radial-gradient(circle, rgba(91, 182, 255, 0.28), transparent 60%);
+  background: radial-gradient(circle, var(--glow-a), transparent 60%);
   opacity: 0.6;
   pointer-events: none;
+}
+
+.feature-card::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 30px;
+  padding: 1px;
+  background: conic-gradient(from 0deg, var(--glow-a), var(--glow-b), var(--glow-a));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.35;
+  pointer-events: none;
+  filter: blur(10px);
+  transition: opacity 0.3s ease, filter 0.3s ease;
+  animation: ambientSpin 16s linear infinite;
+  z-index: 0;
+}
+
+.feature-card:nth-child(2) {
+  --glow-a: rgba(10, 180, 160, 0.35);
+  --glow-b: rgba(26, 108, 186, 0.35);
+}
+
+body[data-theme="iu"] .feature-card {
+  --glow-a: rgba(153, 0, 0, 0.35);
+  --glow-b: rgba(237, 235, 235, 0.35);
+}
+
+.feature-card:hover,
+.feature-card:focus-within {
+  transform: translateY(-4px);
+  box-shadow: 0 28px 70px rgba(31, 35, 40, 0.2), 0 0 22px var(--glow-a), 0 0 34px var(--glow-b);
+}
+
+.feature-card:hover::after,
+.feature-card:focus-within::after {
+  opacity: 0.7;
+  filter: blur(12px);
 }
 
 .feature-card > * {
@@ -938,12 +1035,104 @@ body[data-theme="iu"] .feature-thumb.music {
   margin-top: 0;
 }
 
-.site-footer {
-  padding: 3rem 5vw 4rem;
-  font-size: 0.85rem;
-  letter-spacing: 0.3em;
+.end-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 2.75rem 5vw 4rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--muted);
+  --link-a: rgba(91, 182, 255, 0.95);
+  --link-b: rgba(194, 75, 255, 0.95);
+  --link-glow-a: rgba(91, 182, 255, 0.45);
+  --link-glow-b: rgba(194, 75, 255, 0.35);
+}
+
+.copyright {
+  padding: 0 5vw 2.5rem;
+  text-align: center;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.end-links a {
+  position: relative;
+  color: inherit;
+  background: linear-gradient(120deg, var(--link-a), var(--link-b));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transition: text-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.end-links a:hover,
+.end-links a:focus-visible {
+  filter: brightness(1.05);
+  text-shadow: 0 0 14px var(--link-glow-a), 0 0 18px var(--link-glow-b);
+}
+
+.end-links a:active {
+  text-shadow: 0 0 18px var(--link-glow-a), 0 0 22px var(--link-glow-b);
+}
+
+.end-links .link-sep {
+  color: color-mix(in srgb, var(--muted) 60%, transparent);
+}
+
+#about .iu-inline {
+  font: inherit;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: text;
+}
+
+#about .iu-inline:focus-visible {
+  outline: 1px dashed color-mix(in srgb, var(--muted) 70%, transparent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+#about .content-inner {
+  text-align: center;
+}
+
+#about .about-text {
+  max-width: 760px;
+  margin: 1.25rem auto 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#about .about-text p {
+  margin: 0;
+}
+
+.about-break {
+  height: 1px;
+  width: 100%;
+  border-radius: 999px;
+  background: linear-gradient(120deg, rgba(91, 182, 255, 0.55), rgba(194, 75, 255, 0.55));
+  opacity: 0.6;
+}
+
+body[data-theme="iu"] .end-links {
+  --link-a: rgba(153, 0, 0, 0.9);
+  --link-b: rgba(237, 235, 235, 0.9);
+  --link-glow-a: rgba(153, 0, 0, 0.6);
+  --link-glow-b: rgba(237, 235, 235, 0.45);
+}
+
+body[data-theme="iu"] .end-links .link-sep {
+  color: rgba(153, 0, 0, 0.35);
 }
 
 @keyframes fadeUp {
@@ -962,6 +1151,15 @@ body[data-theme="iu"] .feature-thumb.music {
   }
   100% {
     transform: translateY(0);
+  }
+}
+
+@keyframes ambientSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 
