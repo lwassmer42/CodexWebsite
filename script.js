@@ -215,6 +215,9 @@ if (playButtons.length > 0) {
   let currentButton = null;
   const volumeSlider = document.getElementById("volume-slider");
   let volumeLevel = volumeSlider ? Number(volumeSlider.value || 0) / 100 : 0;
+  let audioContext = null;
+  let gainNode = null;
+  let mediaSource = null;
 
   const updateVolumeFill = (value) => {
     if (!volumeSlider) {
@@ -222,6 +225,19 @@ if (playButtons.length > 0) {
     }
     const clamped = Math.min(Math.max(Number(value) || 0, 0), 100);
     volumeSlider.style.setProperty("--volume-fill", `${clamped}%`);
+    volumeSlider.style.background = `linear-gradient(90deg, rgba(10, 180, 160, 0.65) 0%, rgba(26, 108, 186, 0.75) ${clamped}%, #0b0b0d ${clamped}%, #0b0b0d 100%)`;
+  };
+
+  const ensureAudioContext = () => {
+    if (!audioContext) {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtx) {
+        audioContext = new AudioCtx();
+        gainNode = audioContext.createGain();
+        gainNode.gain.value = volumeLevel;
+        gainNode.connect(audioContext.destination);
+      }
+    }
   };
 
   const resetButton = (button) => {
@@ -243,6 +259,10 @@ if (playButtons.length > 0) {
       currentAudio.currentTime = 0;
       currentAudio = null;
     }
+    if (mediaSource) {
+      mediaSource.disconnect();
+      mediaSource = null;
+    }
     if (currentButton) {
       resetButton(currentButton);
       currentButton = null;
@@ -263,6 +283,7 @@ if (playButtons.length > 0) {
 
       stopAudio();
 
+      ensureAudioContext();
       const audio = new Audio(src);
       audio.preload = "metadata";
       audio.volume = volumeLevel;
@@ -287,6 +308,19 @@ if (playButtons.length > 0) {
         }
       });
 
+      if (audioContext && audioContext.state === "suspended") {
+        audioContext.resume().catch(() => {});
+      }
+
+      if (audioContext && gainNode) {
+        try {
+          mediaSource = audioContext.createMediaElementSource(audio);
+          mediaSource.connect(gainNode);
+        } catch {
+          mediaSource = null;
+        }
+      }
+
       audio.play().catch(() => {
         stopAudio();
       });
@@ -301,6 +335,9 @@ if (playButtons.length > 0) {
       updateVolumeFill(value);
       if (currentAudio) {
         currentAudio.volume = volumeLevel;
+      }
+      if (gainNode) {
+        gainNode.gain.value = volumeLevel;
       }
     });
   }
