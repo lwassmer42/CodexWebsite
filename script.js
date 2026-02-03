@@ -77,7 +77,6 @@ if (iuInline) {
   iuInline.addEventListener("click", () => {
     if (iuMode) {
       setIuMode(false, true);
-      applyBaseTheme("dark", true);
       return;
     }
     if (window.confirm("Do you want to enter IU mode?")) {
