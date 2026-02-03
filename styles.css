@@ -1336,6 +1336,14 @@ body[data-theme="iu"] .end-links .link-sep {
 
 @media (max-width: 640px) {
   #about {
+    padding-bottom: 2rem;
+  }
+
+  .end-links {
+    padding-top: 1.2rem;
+  }
+
+  #about {
     scroll-margin-top: 7.5rem;
   }
 
