@@ -224,8 +224,12 @@ if (playButtons.length > 0) {
       return;
     }
     const clamped = Math.min(Math.max(Number(value) || 0, 0), 100);
+    const styles = getComputedStyle(volumeSlider);
+    const colorA = styles.getPropertyValue("--volume-a").trim() || "rgba(10, 180, 160, 0.65)";
+    const colorB = styles.getPropertyValue("--volume-b").trim() || "rgba(26, 108, 186, 0.75)";
+    const colorBg = styles.getPropertyValue("--volume-bg").trim() || "#0b0b0d";
     volumeSlider.style.setProperty("--volume-fill", `${clamped}%`);
-    volumeSlider.style.background = `linear-gradient(90deg, rgba(10, 180, 160, 0.65) 0%, rgba(26, 108, 186, 0.75) ${clamped}%, #0b0b0d ${clamped}%, #0b0b0d 100%)`;
+    volumeSlider.style.background = `linear-gradient(90deg, ${colorA} 0%, ${colorB} ${clamped}%, ${colorBg} ${clamped}%, ${colorBg} 100%)`;
   };
 
   const ensureAudioContext = () => {

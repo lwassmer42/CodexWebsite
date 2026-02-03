@@ -910,6 +910,12 @@ body[data-theme="iu"] .feature-thumb.music {
   border-radius: 999px;
   background: transparent;
   outline: none;
+  --volume-a: rgba(10, 180, 160, 0.65);
+  --volume-b: rgba(26, 108, 186, 0.75);
+  --volume-bg: #0b0b0d;
+  --volume-thumb-a: #0ab4a0;
+  --volume-thumb-b: #1a6cba;
+  --volume-thumb-border: #0b0b0d;
 }
 
 .volume-slider::-webkit-slider-runnable-track {
@@ -917,10 +923,10 @@ body[data-theme="iu"] .feature-thumb.music {
   border-radius: 999px;
   background: linear-gradient(
     90deg,
-    rgba(10, 180, 160, 0.65) 0%,
-    rgba(26, 108, 186, 0.75) var(--volume-fill, 0%),
-    #0b0b0d var(--volume-fill, 0%),
-    #0b0b0d 100%
+    var(--volume-a) 0%,
+    var(--volume-b) var(--volume-fill, 0%),
+    var(--volume-bg) var(--volume-fill, 0%),
+    var(--volume-bg) 100%
   );
   border: 1px solid rgba(26, 108, 186, 0.35);
 }
@@ -931,8 +937,8 @@ body[data-theme="iu"] .feature-thumb.music {
   width: 16px;
   height: 16px;
   border-radius: 999px;
-  background: linear-gradient(120deg, #0ab4a0, #1a6cba);
-  border: 2px solid #0b0b0d;
+  background: linear-gradient(120deg, var(--volume-thumb-a), var(--volume-thumb-b));
+  border: 2px solid var(--volume-thumb-border);
   box-shadow: 0 0 10px rgba(10, 180, 160, 0.45);
   cursor: pointer;
   margin-top: -6px;
@@ -942,8 +948,8 @@ body[data-theme="iu"] .feature-thumb.music {
   width: 16px;
   height: 16px;
   border-radius: 999px;
-  background: linear-gradient(120deg, #0ab4a0, #1a6cba);
-  border: 2px solid #0b0b0d;
+  background: linear-gradient(120deg, var(--volume-thumb-a), var(--volume-thumb-b));
+  border: 2px solid var(--volume-thumb-border);
   box-shadow: 0 0 10px rgba(10, 180, 160, 0.45);
   cursor: pointer;
 }
@@ -953,12 +959,21 @@ body[data-theme="iu"] .feature-thumb.music {
   border-radius: 999px;
   background: linear-gradient(
     90deg,
-    rgba(10, 180, 160, 0.65) 0%,
-    rgba(26, 108, 186, 0.75) var(--volume-fill, 0%),
-    #0b0b0d var(--volume-fill, 0%),
-    #0b0b0d 100%
+    var(--volume-a) 0%,
+    var(--volume-b) var(--volume-fill, 0%),
+    var(--volume-bg) var(--volume-fill, 0%),
+    var(--volume-bg) 100%
   );
   border: 1px solid rgba(26, 108, 186, 0.35);
+}
+
+body[data-theme="iu"] .volume-slider {
+  --volume-a: rgba(237, 235, 235, 0.85);
+  --volume-b: rgba(153, 0, 0, 0.85);
+  --volume-bg: #1c1616;
+  --volume-thumb-a: #edebeb;
+  --volume-thumb-b: #990000;
+  --volume-thumb-border: #1c1616;
 }
 
 .feature-list {
@@ -1409,6 +1424,13 @@ body[data-theme="iu"] .end-links .link-sep {
 
   .iu-banner {
     display: none;
+  }
+}
+
+@media (hover: none) {
+  .feature-card:first-child::after {
+    opacity: 0.55;
+    filter: blur(12px);
   }
 }
 
