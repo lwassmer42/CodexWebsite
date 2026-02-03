@@ -10,7 +10,8 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600;9..144,700&family=Space+Grotesk:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body data-theme="dark">
@@ -126,6 +127,18 @@
                   <div>
                     <h3>Music</h3>
                     <p>Original songs and covers of my favorites. Check out my Youtube for more covers.</p>
+                    <div class="volume-control">
+                      <span class="volume-label">Volume</span>
+                      <input
+                        class="volume-slider"
+                        id="volume-slider"
+                        type="range"
+                        min="0"
+                        max="100"
+                        value="0"
+                        aria-label="Playback volume"
+                      />
+                    </div>
                   </div>
                 </div>
                 <ul class="feature-list">

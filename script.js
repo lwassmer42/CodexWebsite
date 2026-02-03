@@ -213,6 +213,8 @@ const playButtons = document.querySelectorAll(".play-toggle");
 if (playButtons.length > 0) {
   let currentAudio = null;
   let currentButton = null;
+  const volumeSlider = document.getElementById("volume-slider");
+  let volumeLevel = volumeSlider ? Number(volumeSlider.value || 0) / 100 : 0;
 
   const resetButton = (button) => {
     button.setAttribute("aria-pressed", "false");
@@ -255,6 +257,7 @@ if (playButtons.length > 0) {
 
       const audio = new Audio(src);
       audio.preload = "metadata";
+      audio.volume = volumeLevel;
       currentAudio = audio;
       currentButton = button;
       button.setAttribute("aria-pressed", "true");
@@ -281,4 +284,14 @@ if (playButtons.length > 0) {
       });
     });
   });
+
+  if (volumeSlider) {
+    volumeSlider.addEventListener("input", (event) => {
+      const value = Number(event.target.value || 0);
+      volumeLevel = Math.min(Math.max(value, 0), 100) / 100;
+      if (currentAudio) {
+        currentAudio.volume = volumeLevel;
+      }
+    });
+  }
 }
