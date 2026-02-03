@@ -1442,11 +1442,9 @@ body[data-theme="iu"] .end-links .link-sep {
   }
 }
 
-@media (hover: none) {
-  .feature-card:first-child::after {
-    opacity: 0.55;
-    filter: blur(12px);
-  }
+.feature-card.is-inview::after {
+  opacity: 0.6;
+  filter: blur(10px);
 }
 
 @media (max-width: 640px) {

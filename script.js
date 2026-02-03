@@ -49,6 +49,20 @@ window.addEventListener("load", () => {
   document.body.classList.add("loaded");
 });
 
+const featureCards = document.querySelectorAll(".feature-card");
+if (featureCards.length > 0 && window.matchMedia("(hover: none)").matches) {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        entry.target.classList.toggle("is-inview", entry.isIntersecting);
+      });
+    },
+    { threshold: 0.35 }
+  );
+
+  featureCards.forEach((card) => observer.observe(card));
+}
+
 const portrait = document.querySelector(".portrait");
 if (portrait) {
   const noteGlyphs = ["♪", "♫", "♩"];
