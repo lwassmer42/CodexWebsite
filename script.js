@@ -216,6 +216,14 @@ if (playButtons.length > 0) {
   const volumeSlider = document.getElementById("volume-slider");
   let volumeLevel = volumeSlider ? Number(volumeSlider.value || 0) / 100 : 0;
 
+  const updateVolumeFill = (value) => {
+    if (!volumeSlider) {
+      return;
+    }
+    const clamped = Math.min(Math.max(Number(value) || 0, 0), 100);
+    volumeSlider.style.setProperty("--volume-fill", `${clamped}%`);
+  };
+
   const resetButton = (button) => {
     button.setAttribute("aria-pressed", "false");
     button.classList.remove("is-playing");
@@ -286,9 +294,11 @@ if (playButtons.length > 0) {
   });
 
   if (volumeSlider) {
+    updateVolumeFill(volumeSlider.value);
     volumeSlider.addEventListener("input", (event) => {
       const value = Number(event.target.value || 0);
       volumeLevel = Math.min(Math.max(value, 0), 100) / 100;
+      updateVolumeFill(value);
       if (currentAudio) {
         currentAudio.volume = volumeLevel;
       }
