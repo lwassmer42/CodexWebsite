@@ -1379,6 +1379,7 @@ body[data-theme="iu"] .end-links .link-sep {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    -webkit-text-fill-color: transparent;
     text-shadow: 0 0 12px rgba(91, 182, 255, 0.45), 0 0 18px rgba(194, 75, 255, 0.35);
   }
 
@@ -1387,6 +1388,7 @@ body[data-theme="iu"] .end-links .link-sep {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    -webkit-text-fill-color: transparent;
     text-shadow: 0 0 12px rgba(153, 0, 0, 0.45), 0 0 16px rgba(237, 235, 235, 0.35);
   }
 
