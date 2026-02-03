@@ -1335,6 +1335,10 @@ body[data-theme="iu"] .end-links .link-sep {
   }
 
   .hero-right {
+    order: 1;
+  }
+
+  .hero-left {
     order: 2;
   }
 
@@ -1358,7 +1362,34 @@ body[data-theme="iu"] .end-links .link-sep {
 
 @media (max-width: 640px) {
   .site-header {
-    padding: 1rem 6vw;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.75rem 6vw 1rem;
+  }
+
+  .brand {
+    font-size: 0.9rem;
+  }
+
+  .header-right {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .site-nav {
+    justify-content: center;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+  }
+
+  .theme-toggle {
+    min-width: 7.2rem;
+  }
+
+  main {
+    padding-top: 9.25rem;
   }
 
   .hero {
