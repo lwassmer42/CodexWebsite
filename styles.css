@@ -493,11 +493,13 @@ body.loaded .hero-left > *:nth-child(3) {
 }
 
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  .name {
+  .name-first,
+  .name-last {
     background: linear-gradient(120deg, #5bb6ff 10%, #8b6bff 55%, #c24bff 90%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    -webkit-text-fill-color: transparent;
   }
 }
 
@@ -514,11 +516,13 @@ body[data-theme="iu"] .name-last {
 }
 
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
-  body[data-theme="iu"] .name {
+  body[data-theme="iu"] .name-first,
+  body[data-theme="iu"] .name-last {
     background: linear-gradient(120deg, #990000 15%, #b31217 60%, #edebeb 95%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    -webkit-text-fill-color: transparent;
   }
 }
 
