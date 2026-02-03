@@ -976,6 +976,21 @@ body[data-theme="iu"] .volume-slider {
   --volume-thumb-border: #1c1616;
 }
 
+body[data-theme="iu"] .volume-slider::-webkit-slider-thumb {
+  box-shadow: 0 0 10px rgba(153, 0, 0, 0.45);
+}
+
+body[data-theme="iu"] .volume-slider::-moz-range-thumb {
+  box-shadow: 0 0 10px rgba(153, 0, 0, 0.45);
+}
+
+body[data-theme="iu"] .volume-label {
+  background: linear-gradient(120deg, rgba(237, 235, 235, 0.95), rgba(153, 0, 0, 0.95));
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: 0 0 10px rgba(153, 0, 0, 0.25), 0 0 14px rgba(237, 235, 235, 0.2);
+}
+
 .feature-list {
   list-style: none;
   padding: 0;
