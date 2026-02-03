@@ -1367,7 +1367,7 @@ body[data-theme="iu"] .end-links .link-sep {
   }
 
   .hero {
-    gap: 2.25rem;
+    gap: 1.9rem;
   }
 
   .eyebrow {
@@ -1377,10 +1377,15 @@ body[data-theme="iu"] .end-links .link-sep {
   .name {
     background: none;
     color: var(--text);
+    -webkit-text-fill-color: currentColor;
+    -webkit-background-clip: initial;
+    background-clip: initial;
+    text-shadow: none;
   }
 
   body[data-theme="iu"] .name {
     color: #990000;
+    -webkit-text-fill-color: #990000;
   }
 
   .name-first,
@@ -1391,7 +1396,7 @@ body[data-theme="iu"] .end-links .link-sep {
   .name-first::after,
   .name-last::after {
     animation: none;
-    opacity: 0.25;
+    opacity: 0.18;
   }
 }
 
