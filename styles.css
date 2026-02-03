@@ -365,41 +365,6 @@ body[data-theme="iu"] .brand {
   border-color: rgba(91, 182, 255, 0.6);
 }
 
-.iu-toggle {
-  display: grid;
-  place-items: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: linear-gradient(135deg, rgba(24, 26, 30, 0.9), rgba(16, 18, 22, 0.85));
-  cursor: pointer;
-  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-}
-
-.iu-toggle:hover,
-.iu-toggle:focus-visible {
-  border-color: rgba(255, 255, 255, 0.35);
-  transform: translateY(-1px);
-}
-
-.iu-toggle-chip {
-  width: 1.1rem;
-  height: 1.1rem;
-  border-radius: 8px;
-  background: linear-gradient(135deg, rgba(153, 0, 0, 0.4), rgba(237, 235, 235, 0.2));
-  border: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-body[data-theme="iu"] .iu-toggle {
-  border-color: rgba(153, 0, 0, 0.6);
-  background: linear-gradient(135deg, rgba(153, 0, 0, 0.35), rgba(237, 235, 235, 0.4));
-}
-
-body[data-theme="iu"] .iu-toggle-chip {
-  background: linear-gradient(135deg, #990000, #edebeb);
-  border-color: rgba(153, 0, 0, 0.4);
-}
 
 .toggle-track {
   position: relative;
@@ -424,12 +389,16 @@ body[data-theme="iu"] .iu-toggle-chip {
   height: 0.68rem;
   border-radius: 999px;
   background: var(--text);
-  transform: translateY(-50%);
+  transform: translate(0, -50%);
   transition: transform 0.3s ease;
 }
 
-body[data-theme="dark"] .toggle-thumb {
-  transform: translate(0.95rem, -50%);
+body[data-theme="light"] .toggle-thumb {
+  transform: translate(0.55rem, -50%);
+}
+
+body[data-theme="iu"] .toggle-thumb {
+  transform: translate(1.1rem, -50%);
 }
 
 main {
@@ -1327,6 +1296,7 @@ body[data-theme="iu"] .end-links .link-sep {
 
   .hero {
     grid-template-columns: 1fr;
+    gap: 2.75rem;
   }
 
   .hero-left {
@@ -1394,6 +1364,34 @@ body[data-theme="iu"] .end-links .link-sep {
 
   .hero {
     padding: 1.85rem 6vw 3rem;
+  }
+
+  .hero {
+    gap: 2.25rem;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.35rem;
+  }
+
+  .name {
+    background: none;
+    color: var(--text);
+  }
+
+  body[data-theme="iu"] .name {
+    color: #990000;
+  }
+
+  .name-first,
+  .name-last {
+    animation: none;
+  }
+
+  .name-first::after,
+  .name-last::after {
+    animation: none;
+    opacity: 0.25;
   }
 }
 

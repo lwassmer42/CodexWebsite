@@ -1,11 +1,8 @@
 const storageKey = "theme";
-const iuModeKey = "iu-mode";
 const toggle = document.getElementById("theme-toggle");
-const iuToggle = document.getElementById("iu-toggle");
 const iuInline = document.getElementById("iu-inline");
 const stateLabel = document.getElementById("theme-state");
-const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
-let iuMode = localStorage.getItem(iuModeKey) === "true";
+const themes = ["dark", "light", "iu"];
 let spawnDriftItemNow = null;
 
 const updateModeLabel = (mode) => {
@@ -13,74 +10,37 @@ const updateModeLabel = (mode) => {
   stateLabel.textContent = mode === "dark" ? "DARK" : mode === "iu" ? "IU" : "LIGHT";
 };
 
-const applyBaseTheme = (mode, persist = true) => {
+const applyTheme = (mode, persist = true) => {
   document.body.dataset.theme = mode;
   updateModeLabel(mode);
   if (persist) {
     localStorage.setItem(storageKey, mode);
   }
-};
-
-const setIuMode = (enabled, persist = true) => {
-  iuMode = enabled;
-  if (iuToggle) {
-    iuToggle.setAttribute("aria-pressed", enabled);
-  }
-
-  if (enabled) {
-    document.body.dataset.theme = "iu";
-    updateModeLabel("iu");
-    if (spawnDriftItemNow) {
-      spawnDriftItemNow();
-    }
-  } else {
-    const storedTheme = localStorage.getItem(storageKey);
-    const baseTheme = storedTheme || (prefersDark.matches ? "dark" : "light");
-    applyBaseTheme(baseTheme, false);
-  }
-
-  if (persist) {
-    localStorage.setItem(iuModeKey, enabled ? "true" : "false");
+  if (mode === "iu" && spawnDriftItemNow) {
+    spawnDriftItemNow();
   }
 };
 
 const storedTheme = localStorage.getItem(storageKey);
-const initialTheme = storedTheme || (prefersDark.matches ? "dark" : "light");
-if (iuMode) {
-  setIuMode(true, false);
-} else {
-  applyBaseTheme(initialTheme, false);
-}
-
-prefersDark.addEventListener("change", (event) => {
-  if (!localStorage.getItem(storageKey) && !iuMode) {
-    applyBaseTheme(event.matches ? "dark" : "light", false);
-  }
-});
+const legacyIu = localStorage.getItem("iu-mode") === "true";
+const initialTheme = themes.includes(storedTheme) ? storedTheme : legacyIu ? "iu" : "dark";
+applyTheme(initialTheme, false);
 
 toggle.addEventListener("click", () => {
-  if (iuMode) {
-    setIuMode(false, true);
-    return;
-  }
-  const nextMode = document.body.dataset.theme === "dark" ? "light" : "dark";
-  applyBaseTheme(nextMode, true);
+  const current = document.body.dataset.theme;
+  const index = themes.indexOf(current);
+  const nextMode = index === -1 ? themes[0] : themes[(index + 1) % themes.length];
+  applyTheme(nextMode, true);
 });
-
-if (iuToggle) {
-  iuToggle.addEventListener("click", () => {
-    setIuMode(!iuMode, true);
-  });
-}
 
 if (iuInline) {
   iuInline.addEventListener("click", () => {
-    if (iuMode) {
-      setIuMode(false, true);
+    if (document.body.dataset.theme === "iu") {
+      applyTheme("dark", true);
       return;
     }
     if (window.confirm("Do you want to enter IU mode?")) {
-      setIuMode(true, true);
+      applyTheme("iu", true);
     }
   });
 }
@@ -242,7 +202,11 @@ document.addEventListener("keydown", (event) => {
   }
 
   event.preventDefault();
-  setIuMode(!iuMode, true);
+  if (document.body.dataset.theme === "iu") {
+    applyTheme("dark", true);
+  } else {
+    applyTheme("iu", true);
+  }
 });
 
 const playButtons = document.querySelectorAll(".play-toggle");
