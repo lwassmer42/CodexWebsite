@@ -1375,28 +1375,38 @@ body[data-theme="iu"] .end-links .link-sep {
   }
 
   .name {
-    background: none;
-    color: var(--text);
-    -webkit-text-fill-color: currentColor;
-    -webkit-background-clip: initial;
-    background-clip: initial;
-    text-shadow: none;
+    background: linear-gradient(120deg, #5bb6ff 10%, #8b6bff 55%, #c24bff 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 12px rgba(91, 182, 255, 0.45), 0 0 18px rgba(194, 75, 255, 0.35);
   }
 
   body[data-theme="iu"] .name {
-    color: #990000;
-    -webkit-text-fill-color: #990000;
+    background: linear-gradient(120deg, #990000 15%, #b31217 60%, #edebeb 95%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 12px rgba(153, 0, 0, 0.45), 0 0 16px rgba(237, 235, 235, 0.35);
   }
 
   .name-first,
   .name-last {
-    animation: none;
+    animation: nameGlow 10s ease-in-out infinite;
+  }
+
+  .name-last {
+    animation-delay: 5s;
   }
 
   .name-first::after,
   .name-last::after {
-    animation: none;
-    opacity: 0.18;
+    animation: underlineGlow 10s ease-in-out infinite;
+    opacity: 0.4;
+  }
+
+  .name-last::after {
+    animation-delay: 5s;
   }
 }
 
