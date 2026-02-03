@@ -1335,6 +1335,10 @@ body[data-theme="iu"] .end-links .link-sep {
 }
 
 @media (max-width: 640px) {
+  #about {
+    scroll-margin-top: 7.5rem;
+  }
+
   .scroll-indicator {
     bottom: 0.25rem;
   }
