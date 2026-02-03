@@ -894,8 +894,12 @@ body[data-theme="iu"] .feature-thumb.music {
   font-size: 0.65rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--muted);
-  transform: translateY(-5px);
+  color: transparent;
+  transform: translate(5px, -5px);
+  background: linear-gradient(120deg, rgba(10, 180, 160, 0.9), rgba(26, 108, 186, 0.9));
+  -webkit-background-clip: text;
+  background-clip: text;
+  text-shadow: 0 0 10px rgba(10, 180, 160, 0.2), 0 0 14px rgba(26, 108, 186, 0.15);
 }
 
 .volume-slider {
