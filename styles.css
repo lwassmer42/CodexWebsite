@@ -1336,7 +1336,7 @@ body[data-theme="iu"] .end-links .link-sep {
 
 @media (max-width: 640px) {
   .scroll-indicator {
-    bottom: 1.8rem;
+    bottom: 0.55rem;
   }
 
   .site-header {
