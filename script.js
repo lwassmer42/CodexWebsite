@@ -50,17 +50,21 @@ window.addEventListener("load", () => {
 });
 
 const featureCards = document.querySelectorAll(".feature-card");
-if (featureCards.length > 0 && window.matchMedia("(hover: none)").matches) {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        entry.target.classList.toggle("is-inview", entry.isIntersecting);
-      });
-    },
-    { threshold: 0.35 }
-  );
+if (featureCards.length > 0) {
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          entry.target.classList.toggle("is-inview", entry.isIntersecting);
+        });
+      },
+      { threshold: 0.3, rootMargin: "0px 0px -10% 0px" }
+    );
 
-  featureCards.forEach((card) => observer.observe(card));
+    featureCards.forEach((card) => observer.observe(card));
+  } else {
+    featureCards.forEach((card) => card.classList.add("is-inview"));
+  }
 }
 
 const portrait = document.querySelector(".portrait");
