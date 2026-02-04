@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="LW favicon">
+  <defs>
+    <linearGradient id="lwGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5bb6ff" />
+      <stop offset="1" stop-color="#c24bff" />
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="12" fill="#0b0b0d" stroke="#1f2328" stroke-width="2" />
+  <text x="32" y="26" text-anchor="middle" font-size="22" font-weight="700" font-family="Arial, sans-serif" fill="url(#lwGrad)">LW</text>
+  <rect x="12" y="36" width="16" height="18" rx="7" fill="none" stroke="#5bb6ff" stroke-width="2" />
+  <line x1="20" y1="36" x2="20" y2="44" stroke="#5bb6ff" stroke-width="2" stroke-linecap="round" />
+  <path d="M45 36v12.5a3.5 3.5 0 1 1-2-3V39l8-2v9.5a3.5 3.5 0 1 1-2-3V35z" fill="#c24bff" />
+</svg>

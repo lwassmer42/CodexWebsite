@@ -49,6 +49,24 @@ window.addEventListener("load", () => {
   document.body.classList.add("loaded");
 });
 
+const featureCards = document.querySelectorAll(".feature-card");
+if (featureCards.length > 0) {
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          entry.target.classList.toggle("is-inview", entry.isIntersecting);
+        });
+      },
+      { threshold: 0.3, rootMargin: "0px 0px -10% 0px" }
+    );
+
+    featureCards.forEach((card) => observer.observe(card));
+  } else {
+    featureCards.forEach((card) => card.classList.add("is-inview"));
+  }
+}
+
 const portrait = document.querySelector(".portrait");
 if (portrait) {
   const noteGlyphs = ["♪", "♫", "♩"];
@@ -213,6 +231,36 @@ const playButtons = document.querySelectorAll(".play-toggle");
 if (playButtons.length > 0) {
   let currentAudio = null;
   let currentButton = null;
+  const volumeSlider = document.getElementById("volume-slider");
+  let volumeLevel = volumeSlider ? Number(volumeSlider.value || 0) / 100 : 0;
+  let audioContext = null;
+  let gainNode = null;
+  let mediaSource = null;
+
+  const updateVolumeFill = (value) => {
+    if (!volumeSlider) {
+      return;
+    }
+    const clamped = Math.min(Math.max(Number(value) || 0, 0), 100);
+    const styles = getComputedStyle(volumeSlider);
+    const colorA = styles.getPropertyValue("--volume-a").trim() || "rgba(10, 180, 160, 0.65)";
+    const colorB = styles.getPropertyValue("--volume-b").trim() || "rgba(26, 108, 186, 0.75)";
+    const colorBg = styles.getPropertyValue("--volume-bg").trim() || "#0b0b0d";
+    volumeSlider.style.setProperty("--volume-fill", `${clamped}%`);
+    volumeSlider.style.background = `linear-gradient(90deg, ${colorA} 0%, ${colorB} ${clamped}%, ${colorBg} ${clamped}%, ${colorBg} 100%)`;
+  };
+
+  const ensureAudioContext = () => {
+    if (!audioContext) {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtx) {
+        audioContext = new AudioCtx();
+        gainNode = audioContext.createGain();
+        gainNode.gain.value = volumeLevel;
+        gainNode.connect(audioContext.destination);
+      }
+    }
+  };
 
   const resetButton = (button) => {
     button.setAttribute("aria-pressed", "false");
@@ -232,6 +280,10 @@ if (playButtons.length > 0) {
       currentAudio.pause();
       currentAudio.currentTime = 0;
       currentAudio = null;
+    }
+    if (mediaSource) {
+      mediaSource.disconnect();
+      mediaSource = null;
     }
     if (currentButton) {
       resetButton(currentButton);
@@ -253,8 +305,10 @@ if (playButtons.length > 0) {
 
       stopAudio();
 
+      ensureAudioContext();
       const audio = new Audio(src);
       audio.preload = "metadata";
+      audio.volume = volumeLevel;
       currentAudio = audio;
       currentButton = button;
       button.setAttribute("aria-pressed", "true");
@@ -276,9 +330,37 @@ if (playButtons.length > 0) {
         }
       });
 
+      if (audioContext && audioContext.state === "suspended") {
+        audioContext.resume().catch(() => {});
+      }
+
+      if (audioContext && gainNode) {
+        try {
+          mediaSource = audioContext.createMediaElementSource(audio);
+          mediaSource.connect(gainNode);
+        } catch {
+          mediaSource = null;
+        }
+      }
+
       audio.play().catch(() => {
         stopAudio();
       });
     });
   });
+
+  if (volumeSlider) {
+    updateVolumeFill(volumeSlider.value);
+    volumeSlider.addEventListener("input", (event) => {
+      const value = Number(event.target.value || 0);
+      volumeLevel = Math.min(Math.max(value, 0), 100) / 100;
+      updateVolumeFill(value);
+      if (currentAudio) {
+        currentAudio.volume = volumeLevel;
+      }
+      if (gainNode) {
+        gainNode.gain.value = volumeLevel;
+      }
+    });
+  }
 }
