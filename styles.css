@@ -1466,42 +1466,6 @@ body[data-theme="iu"] .end-links .link-sep {
 }
 
 @media (max-width: 640px) {
-  .volume-slider {
-    height: 0.6rem;
-  }
-
-  .volume-slider::-webkit-slider-runnable-track {
-    height: 0.6rem;
-  }
-
-  .volume-slider::-webkit-slider-thumb {
-    width: 20px;
-    height: 20px;
-    margin-top: -7px;
-  }
-
-  .volume-slider::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-  }
-
-  .volume-slider::-moz-range-track {
-    height: 0.6rem;
-  }
-
-  .feature-grid {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .feature-grid .feature-card:nth-child(1) {
-    order: 2;
-  }
-
-  .feature-grid .feature-card:nth-child(2) {
-    order: 1;
-  }
-
   #about {
     padding-bottom: 2rem;
   }

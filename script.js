@@ -236,7 +236,6 @@ if (playButtons.length > 0) {
   let audioContext = null;
   let gainNode = null;
   let mediaSource = null;
-  let useWebAudio = false;
 
   const updateVolumeFill = (value) => {
     if (!volumeSlider) {
@@ -286,7 +285,6 @@ if (playButtons.length > 0) {
       mediaSource.disconnect();
       mediaSource = null;
     }
-    useWebAudio = false;
     if (currentButton) {
       resetButton(currentButton);
       currentButton = null;
@@ -310,7 +308,7 @@ if (playButtons.length > 0) {
       ensureAudioContext();
       const audio = new Audio(src);
       audio.preload = "metadata";
-      audio.volume = 1;
+      audio.volume = volumeLevel;
       currentAudio = audio;
       currentButton = button;
       button.setAttribute("aria-pressed", "true");
@@ -340,15 +338,9 @@ if (playButtons.length > 0) {
         try {
           mediaSource = audioContext.createMediaElementSource(audio);
           mediaSource.connect(gainNode);
-          useWebAudio = true;
         } catch {
           mediaSource = null;
-          useWebAudio = false;
         }
-      }
-
-      if (!useWebAudio) {
-        audio.volume = volumeLevel;
       }
 
       audio.play().catch(() => {
@@ -363,10 +355,11 @@ if (playButtons.length > 0) {
       const value = Number(event.target.value || 0);
       volumeLevel = Math.min(Math.max(value, 0), 100) / 100;
       updateVolumeFill(value);
-      if (useWebAudio && gainNode) {
-        gainNode.gain.value = volumeLevel;
-      } else if (currentAudio) {
+      if (currentAudio) {
         currentAudio.volume = volumeLevel;
+      }
+      if (gainNode) {
+        gainNode.gain.value = volumeLevel;
       }
     });
   }
