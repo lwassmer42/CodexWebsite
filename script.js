@@ -74,8 +74,22 @@ if (portrait) {
   const iuNoteColors = ["#990000", "#edebeb", "#b31217"];
   const getNoteColors = () =>
     document.body.dataset.theme === "iu" ? iuNoteColors : defaultNoteColors;
+  const portraitImage = portrait.querySelector("img");
+  if (portraitImage) {
+    portraitImage.draggable = false;
+    portraitImage.addEventListener("dragstart", (event) => {
+      event.preventDefault();
+    });
+  }
 
-  portrait.addEventListener("click", () => {
+  let lastBurstAt = 0;
+  const triggerPortraitBurst = () => {
+    const now = Date.now();
+    if (now - lastBurstAt < 180) {
+      return;
+    }
+    lastBurstAt = now;
+
     const noteColors = getNoteColors();
     if (portrait.pulseTimeout) {
       clearTimeout(portrait.pulseTimeout);
@@ -133,7 +147,30 @@ if (portrait) {
     portrait.pulseTimeout = setTimeout(() => {
       portrait.classList.remove("pulse", "shake");
     }, 750);
+  };
+
+  const activateFromPointerOrClick = (event) => {
+    if (typeof event.button === "number" && event.button !== 0) {
+      return;
+    }
+    triggerPortraitBurst();
+  };
+
+  if (window.PointerEvent) {
+    portrait.addEventListener("pointerup", activateFromPointerOrClick);
+  }
+  portrait.addEventListener("click", activateFromPointerOrClick);
+  portrait.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") {
+      return;
+    }
+    event.preventDefault();
+    triggerPortraitBurst();
   });
+
+  portrait.setAttribute("role", "button");
+  portrait.setAttribute("tabindex", "0");
+  portrait.setAttribute("aria-label", "Play portrait animation");
 }
 
 const driftLayer = document.querySelector(".drift-layer");
