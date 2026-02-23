@@ -611,6 +611,7 @@ body[data-theme="iu"] .email-link {
   transition: background 0.3s ease, transform 0.3s ease;
   overflow: visible;
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 .portrait img {
@@ -618,6 +619,8 @@ body[data-theme="iu"] .email-link {
   height: auto;
   border-radius: 22px;
   display: block;
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
 .portrait:hover {
