@@ -410,7 +410,7 @@ if (playButtons.length > 0) {
           ? audioContext.suspend()
           : Promise.resolve();
         suspendCtx.catch(() => {}).then(() => {
-          if (currentAudio) {
+          if (currentAudio && document.hidden) {
             currentAudio.pause();
           }
         });
