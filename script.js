@@ -416,7 +416,7 @@ if (playButtons.length > 0) {
         wasPlayingBeforeHide = false;
         const resumeCtx = audioContext ? audioContext.resume() : Promise.resolve();
         resumeCtx.catch(() => {}).then(() => {
-          if (currentAudio) {
+          if (currentAudio && !document.hidden) {
             currentAudio.play().catch(() => {
               stopAudio();
             });
