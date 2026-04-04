@@ -422,9 +422,7 @@ if (playButtons.length > 0) {
         resumeCtx.catch(() => {}).then(() => {
           if (currentAudio && !document.hidden) {
             currentAudio.play().catch(() => {
-              // Autoplay was blocked (e.g. mobile autoplay policy); leave audio
-              // paused in place so the user can resume manually without losing
-              // their position.
+              stopAudio();
             });
           }
         });
