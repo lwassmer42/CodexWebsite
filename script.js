@@ -400,4 +400,27 @@ if (playButtons.length > 0) {
       }
     });
   }
+
+  let wasPlayingBeforeHide = false;
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      wasPlayingBeforeHide = currentAudio !== null && !currentAudio.paused;
+      if (wasPlayingBeforeHide) {
+        if (audioContext && audioContext.state === "running") {
+          audioContext.suspend().catch(() => {});
+        }
+        currentAudio.pause();
+      }
+    } else {
+      if (wasPlayingBeforeHide && currentAudio) {
+        wasPlayingBeforeHide = false;
+        if (audioContext && audioContext.state === "suspended") {
+          audioContext.resume().catch(() => {});
+        }
+        currentAudio.play().catch(() => {
+          stopAudio();
+        });
+      }
+    }
+  });
 }
