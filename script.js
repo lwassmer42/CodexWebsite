@@ -406,10 +406,14 @@ if (playButtons.length > 0) {
     if (document.hidden) {
       wasPlayingBeforeHide = currentAudio !== null && !currentAudio.paused;
       if (wasPlayingBeforeHide) {
-        if (audioContext && audioContext.state === "running") {
-          audioContext.suspend().catch(() => {});
-        }
-        currentAudio.pause();
+        const suspendCtx = (audioContext && audioContext.state === "running")
+          ? audioContext.suspend()
+          : Promise.resolve();
+        suspendCtx.catch(() => {}).then(() => {
+          if (currentAudio) {
+            currentAudio.pause();
+          }
+        });
       }
     } else {
       if (wasPlayingBeforeHide && currentAudio) {
@@ -418,7 +422,9 @@ if (playButtons.length > 0) {
         resumeCtx.catch(() => {}).then(() => {
           if (currentAudio && !document.hidden) {
             currentAudio.play().catch(() => {
-              stopAudio();
+              // Autoplay was blocked (e.g. mobile autoplay policy); leave audio
+              // paused in place so the user can resume manually without losing
+              // their position.
             });
           }
         });
