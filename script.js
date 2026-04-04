@@ -414,11 +414,13 @@ if (playButtons.length > 0) {
     } else {
       if (wasPlayingBeforeHide && currentAudio) {
         wasPlayingBeforeHide = false;
-        if (audioContext && audioContext.state === "suspended") {
-          audioContext.resume().catch(() => {});
-        }
-        currentAudio.play().catch(() => {
-          stopAudio();
+        const resumeCtx = audioContext ? audioContext.resume() : Promise.resolve();
+        resumeCtx.catch(() => {}).then(() => {
+          if (currentAudio) {
+            currentAudio.play().catch(() => {
+              stopAudio();
+            });
+          }
         });
       }
     }
