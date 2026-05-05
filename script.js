@@ -404,7 +404,9 @@ if (playButtons.length > 0) {
   let wasPlayingBeforeHide = false;
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
-      wasPlayingBeforeHide = currentAudio !== null && !currentAudio.paused;
+      if (currentAudio !== null && !currentAudio.paused) {
+        wasPlayingBeforeHide = true;
+      }
       if (wasPlayingBeforeHide) {
         const suspendCtx = (audioContext && audioContext.state === "running")
           ? audioContext.suspend()
@@ -417,10 +419,10 @@ if (playButtons.length > 0) {
       }
     } else {
       if (wasPlayingBeforeHide && currentAudio) {
-        wasPlayingBeforeHide = false;
         const resumeCtx = audioContext ? audioContext.resume() : Promise.resolve();
         resumeCtx.catch(() => {}).then(() => {
           if (currentAudio && !document.hidden) {
+            wasPlayingBeforeHide = false;
             currentAudio.play().catch(() => {
               stopAudio();
             });
