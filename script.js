@@ -336,6 +336,21 @@ if (playButtons.length > 0) {
       }
 
       if (currentButton === button) {
+        if (currentAudio && currentAudio.paused) {
+          const resumeCtx = audioContext ? audioContext.resume() : Promise.resolve();
+          resumeCtx.catch(() => {}).then(() => {
+            if (currentAudio) {
+              currentAudio.play().catch(() => stopAudio());
+            }
+          });
+          button.setAttribute("aria-pressed", "true");
+          button.classList.add("is-playing");
+          const resumeIcon = button.querySelector(".play-icon");
+          if (resumeIcon) resumeIcon.textContent = "■";
+          const resumeLabel = button.querySelector(".play-label");
+          if (resumeLabel) resumeLabel.textContent = "Stop";
+          return;
+        }
         stopAudio();
         return;
       }
@@ -425,8 +440,13 @@ if (playButtons.length > 0) {
         resumeCtx.catch(() => {}).then(() => {
           if (currentAudio && !document.hidden) {
             wasPlayingBeforeHide = false;
-            currentAudio.play().catch(() => {
-              stopAudio();
+            currentAudio.play().catch((err) => {
+              if (err?.name === "NotAllowedError") {
+                wasPlayingBeforeHide = true;
+                if (currentButton) resetButton(currentButton);
+              } else if (err?.name !== "AbortError") {
+                stopAudio();
+              }
             });
           }
         });
