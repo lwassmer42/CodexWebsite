@@ -342,6 +342,7 @@ if (playButtons.length > 0) {
     }
     if (trackSlider) {
       trackSlider.value = 0;
+      trackSlider.disabled = true;
       updateTrackFill(0);
     }
   };
@@ -354,6 +355,16 @@ if (playButtons.length > 0) {
       }
 
       if (currentButton === button) {
+        if (currentAudio && !currentAudio.paused) {
+          currentAudio.pause();
+          button.setAttribute("aria-pressed", "false");
+          button.classList.remove("is-playing");
+          const pauseIcon = button.querySelector(".play-icon");
+          if (pauseIcon) pauseIcon.textContent = "▶";
+          const pauseLabel = button.querySelector(".play-label");
+          if (pauseLabel) pauseLabel.textContent = "Play";
+          return;
+        }
         if (currentAudio && currentAudio.paused) {
           if (audioContext && audioContext.state === "suspended") {
             audioContext.resume().catch(() => {});
@@ -362,9 +373,9 @@ if (playButtons.length > 0) {
           button.setAttribute("aria-pressed", "true");
           button.classList.add("is-playing");
           const resumeIcon = button.querySelector(".play-icon");
-          if (resumeIcon) resumeIcon.textContent = "■";
+          if (resumeIcon) resumeIcon.textContent = "⏸";
           const resumeLabel = button.querySelector(".play-label");
-          if (resumeLabel) resumeLabel.textContent = "Stop";
+          if (resumeLabel) resumeLabel.textContent = "Pause";
           return;
         }
         stopAudio();
@@ -384,12 +395,16 @@ if (playButtons.length > 0) {
 
       const icon = button.querySelector(".play-icon");
       if (icon) {
-        icon.textContent = "■";
+        icon.textContent = "⏸";
       }
 
       const label = button.querySelector(".play-label");
       if (label) {
-        label.textContent = "Stop";
+        label.textContent = "Pause";
+      }
+
+      if (trackSlider) {
+        trackSlider.disabled = false;
       }
 
       audio.addEventListener("ended", () => {

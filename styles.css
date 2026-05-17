@@ -968,6 +968,11 @@ body[data-theme="iu"] .feature-thumb.arcade {
   cursor: pointer;
 }
 
+.volume-slider:disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
 .volume-slider::-moz-range-track {
   height: 0.45rem;
   border-radius: 999px;
