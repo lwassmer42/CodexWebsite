@@ -362,7 +362,7 @@ if (playButtons.length > 0) {
           const pauseIcon = button.querySelector(".play-icon");
           if (pauseIcon) pauseIcon.textContent = "▶";
           const pauseLabel = button.querySelector(".play-label");
-          if (pauseLabel) pauseLabel.textContent = "Play";
+          if (pauseLabel) pauseLabel.textContent = "Resume";
           return;
         }
         if (currentAudio && currentAudio.paused) {
