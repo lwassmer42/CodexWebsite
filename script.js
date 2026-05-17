@@ -373,7 +373,7 @@ if (playButtons.length > 0) {
           button.setAttribute("aria-pressed", "true");
           button.classList.add("is-playing");
           const resumeIcon = button.querySelector(".play-icon");
-          if (resumeIcon) resumeIcon.textContent = "⏸︎";
+          if (resumeIcon) resumeIcon.textContent = "▮▮";
           const resumeLabel = button.querySelector(".play-label");
           if (resumeLabel) resumeLabel.textContent = "Pause";
           return;
@@ -395,7 +395,7 @@ if (playButtons.length > 0) {
 
       const icon = button.querySelector(".play-icon");
       if (icon) {
-        icon.textContent = "⏸︎";
+        icon.textContent = "▮▮";
       }
 
       const label = button.querySelector(".play-label");
