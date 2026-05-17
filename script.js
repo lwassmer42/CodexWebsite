@@ -269,6 +269,7 @@ if (playButtons.length > 0) {
   let currentAudio = null;
   let currentButton = null;
   const volumeSlider = document.getElementById("volume-slider");
+  const trackSlider = document.getElementById("track-slider");
   let volumeLevel = volumeSlider ? Number(volumeSlider.value || 0) / 100 : 0;
   let audioContext = null;
   let gainNode = null;
@@ -285,6 +286,19 @@ if (playButtons.length > 0) {
     const colorBg = styles.getPropertyValue("--volume-bg").trim() || "#0b0b0d";
     volumeSlider.style.setProperty("--volume-fill", `${clamped}%`);
     volumeSlider.style.background = `linear-gradient(90deg, ${colorA} 0%, ${colorB} ${clamped}%, ${colorBg} ${clamped}%, ${colorBg} 100%)`;
+  };
+
+  const updateTrackFill = (value) => {
+    if (!trackSlider) {
+      return;
+    }
+    const clamped = Math.min(Math.max(Number(value) || 0, 0), 100);
+    const styles = getComputedStyle(trackSlider);
+    const colorA = styles.getPropertyValue("--volume-a").trim() || "rgba(10, 180, 160, 0.65)";
+    const colorB = styles.getPropertyValue("--volume-b").trim() || "rgba(26, 108, 186, 0.75)";
+    const colorBg = styles.getPropertyValue("--volume-bg").trim() || "#0b0b0d";
+    trackSlider.style.setProperty("--volume-fill", `${clamped}%`);
+    trackSlider.style.background = `linear-gradient(90deg, ${colorA} 0%, ${colorB} ${clamped}%, ${colorBg} ${clamped}%, ${colorBg} 100%)`;
   };
 
   const ensureAudioContext = () => {
@@ -326,6 +340,24 @@ if (playButtons.length > 0) {
       resetButton(currentButton);
       currentButton = null;
     }
+    if (trackSlider) {
+      trackSlider.value = 0;
+      trackSlider.disabled = true;
+      updateTrackFill(0);
+    }
+  };
+
+  const playWithContext = (audio) => {
+    const start = () => {
+      audio.play().catch((err) => {
+        if (err?.name !== "AbortError") stopAudio();
+      });
+    };
+    if (audioContext && audioContext.state !== "running") {
+      audioContext.resume().then(start).catch(start);
+    } else {
+      start();
+    }
   };
 
   playButtons.forEach((button) => {
@@ -336,6 +368,26 @@ if (playButtons.length > 0) {
       }
 
       if (currentButton === button) {
+        if (currentAudio && !currentAudio.paused) {
+          currentAudio.pause();
+          button.setAttribute("aria-pressed", "false");
+          button.classList.remove("is-playing");
+          const pauseIcon = button.querySelector(".play-icon");
+          if (pauseIcon) pauseIcon.textContent = "▶";
+          const pauseLabel = button.querySelector(".play-label");
+          if (pauseLabel) pauseLabel.textContent = "Resume";
+          return;
+        }
+        if (currentAudio && currentAudio.paused) {
+          playWithContext(currentAudio);
+          button.setAttribute("aria-pressed", "true");
+          button.classList.add("is-playing");
+          const resumeIcon = button.querySelector(".play-icon");
+          if (resumeIcon) resumeIcon.textContent = "▮▮";
+          const resumeLabel = button.querySelector(".play-label");
+          if (resumeLabel) resumeLabel.textContent = "Pause";
+          return;
+        }
         stopAudio();
         return;
       }
@@ -353,12 +405,16 @@ if (playButtons.length > 0) {
 
       const icon = button.querySelector(".play-icon");
       if (icon) {
-        icon.textContent = "■";
+        icon.textContent = "▮▮";
       }
 
       const label = button.querySelector(".play-label");
       if (label) {
-        label.textContent = "Stop";
+        label.textContent = "Pause";
+      }
+
+      if (trackSlider) {
+        trackSlider.disabled = false;
       }
 
       audio.addEventListener("ended", () => {
@@ -367,9 +423,13 @@ if (playButtons.length > 0) {
         }
       });
 
-      if (audioContext && audioContext.state === "suspended") {
-        audioContext.resume().catch(() => {});
-      }
+      audio.addEventListener("timeupdate", () => {
+        if (trackSlider && isFinite(audio.duration) && audio.duration > 0) {
+          const pct = (audio.currentTime / audio.duration) * 100;
+          trackSlider.value = pct;
+          updateTrackFill(pct);
+        }
+      });
 
       if (audioContext && gainNode) {
         try {
@@ -380,9 +440,7 @@ if (playButtons.length > 0) {
         }
       }
 
-      audio.play().catch(() => {
-        stopAudio();
-      });
+      playWithContext(audio);
     });
   });
 
@@ -400,4 +458,29 @@ if (playButtons.length > 0) {
       }
     });
   }
+
+  if (trackSlider) {
+    updateTrackFill(0);
+    trackSlider.addEventListener("input", (event) => {
+      if (currentAudio && isFinite(currentAudio.duration) && currentAudio.duration > 0) {
+        const pct = Number(event.target.value) / 100;
+        currentAudio.currentTime = pct * currentAudio.duration;
+        updateTrackFill(Number(event.target.value));
+      }
+    });
+  }
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden && currentAudio && !currentAudio.paused) {
+      currentAudio.pause();
+      if (currentButton) {
+        currentButton.setAttribute("aria-pressed", "false");
+        currentButton.classList.remove("is-playing");
+        const icon = currentButton.querySelector(".play-icon");
+        if (icon) icon.textContent = "▶";
+        const label = currentButton.querySelector(".play-label");
+        if (label) label.textContent = "Resume";
+      }
+    }
+  });
 }

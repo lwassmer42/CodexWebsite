@@ -819,6 +819,11 @@ body[data-theme="iu"] .work-showcase .section-head h2 {
   --glow-b: rgba(26, 108, 186, 0.35);
 }
 
+.feature-card:nth-child(3) {
+  --glow-a: rgba(38, 141, 255, 0.4);
+  --glow-b: rgba(50, 204, 255, 0.32);
+}
+
 body[data-theme="iu"] .feature-card {
   --glow-a: rgba(153, 0, 0, 0.35);
   --glow-b: rgba(237, 235, 235, 0.35);
@@ -875,8 +880,13 @@ body[data-theme="iu"] .feature-card {
   background: linear-gradient(135deg, rgba(10, 62, 54, 0.9), rgba(26, 108, 186, 0.65));
 }
 
+.feature-thumb.arcade {
+  background: linear-gradient(135deg, rgba(77, 170, 255, 0.58), rgba(34, 108, 216, 0.5), rgba(36, 56, 165, 0.38));
+}
+
 body[data-theme="iu"] .feature-thumb,
-body[data-theme="iu"] .feature-thumb.music {
+body[data-theme="iu"] .feature-thumb.music,
+body[data-theme="iu"] .feature-thumb.arcade {
   background: linear-gradient(135deg, rgba(153, 0, 0, 0.6), rgba(237, 235, 235, 0.45));
   border-color: rgba(153, 0, 0, 0.35);
   color: #990000;
@@ -938,24 +948,29 @@ body[data-theme="iu"] .feature-thumb.music {
 .volume-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
   border-radius: 999px;
   background: linear-gradient(120deg, var(--volume-thumb-a), var(--volume-thumb-b));
   border: 2px solid var(--volume-thumb-border);
   box-shadow: 0 0 10px rgba(10, 180, 160, 0.45);
   cursor: pointer;
-  margin-top: -6px;
+  margin-top: -8px;
 }
 
 .volume-slider::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
   border-radius: 999px;
   background: linear-gradient(120deg, var(--volume-thumb-a), var(--volume-thumb-b));
   border: 2px solid var(--volume-thumb-border);
   box-shadow: 0 0 10px rgba(10, 180, 160, 0.45);
   cursor: pointer;
+}
+
+.volume-slider:disabled {
+  opacity: 0.3;
+  pointer-events: none;
 }
 
 .volume-slider::-moz-range-track {
@@ -1033,6 +1048,7 @@ body[data-theme="iu"] .volume-label {
   display: grid;
   justify-items: end;
   gap: 0.6rem;
+  flex: 0 0 auto;
 }
 
 .pill-link,
@@ -1045,6 +1061,7 @@ body[data-theme="iu"] .volume-label {
   font-weight: 500;
   letter-spacing: 0.18em;
   text-transform: uppercase;
+  white-space: nowrap;
   padding: 0.55rem 1.15rem;
   min-width: 120px;
   height: 2.25rem;
@@ -1554,6 +1571,10 @@ body[data-theme="iu"] .end-links .link-sep {
 
   .feature-grid .feature-card:nth-child(2) {
     order: 1;
+  }
+
+  .feature-grid .feature-card:nth-child(3) {
+    order: 3;
   }
 
   #about {
