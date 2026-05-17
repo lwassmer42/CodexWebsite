@@ -380,8 +380,10 @@ if (playButtons.length > 0) {
         }
       }
 
-      audio.play().catch(() => {
-        stopAudio();
+      audio.play().catch((err) => {
+        if (err?.name !== "AbortError") {
+          stopAudio();
+        }
       });
     });
   });
