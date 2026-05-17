@@ -337,12 +337,10 @@ if (playButtons.length > 0) {
 
       if (currentButton === button) {
         if (currentAudio && currentAudio.paused) {
-          const resumeCtx = audioContext ? audioContext.resume() : Promise.resolve();
-          resumeCtx.catch(() => {}).then(() => {
-            if (currentAudio) {
-              currentAudio.play().catch(() => stopAudio());
-            }
-          });
+          if (audioContext && audioContext.state === "suspended") {
+            audioContext.resume().catch(() => {});
+          }
+          currentAudio.play().catch(() => stopAudio());
           button.setAttribute("aria-pressed", "true");
           button.classList.add("is-playing");
           const resumeIcon = button.querySelector(".play-icon");
@@ -418,38 +416,16 @@ if (playButtons.length > 0) {
     });
   }
 
-  let wasPlayingBeforeHide = false;
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-      if (currentAudio !== null && !currentAudio.paused) {
-        wasPlayingBeforeHide = true;
-      }
-      if (wasPlayingBeforeHide) {
-        const suspendCtx = (audioContext && audioContext.state === "running")
-          ? audioContext.suspend()
-          : Promise.resolve();
-        suspendCtx.catch(() => {}).then(() => {
-          if (currentAudio && document.hidden) {
-            currentAudio.pause();
-          }
-        });
-      }
-    } else {
-      if (wasPlayingBeforeHide && currentAudio) {
-        const resumeCtx = audioContext ? audioContext.resume() : Promise.resolve();
-        resumeCtx.catch(() => {}).then(() => {
-          if (currentAudio && !document.hidden) {
-            wasPlayingBeforeHide = false;
-            currentAudio.play().catch((err) => {
-              if (err?.name === "NotAllowedError") {
-                wasPlayingBeforeHide = true;
-                if (currentButton) resetButton(currentButton);
-              } else if (err?.name !== "AbortError") {
-                stopAudio();
-              }
-            });
-          }
-        });
+    if (document.hidden && currentAudio && !currentAudio.paused) {
+      currentAudio.pause();
+      if (currentButton) {
+        currentButton.setAttribute("aria-pressed", "false");
+        currentButton.classList.remove("is-playing");
+        const icon = currentButton.querySelector(".play-icon");
+        if (icon) icon.textContent = "▶";
+        const label = currentButton.querySelector(".play-label");
+        if (label) label.textContent = "Resume";
       }
     }
   });
