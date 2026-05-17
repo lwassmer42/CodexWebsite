@@ -948,19 +948,19 @@ body[data-theme="iu"] .feature-thumb.arcade {
 .volume-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
   border-radius: 999px;
   background: linear-gradient(120deg, var(--volume-thumb-a), var(--volume-thumb-b));
   border: 2px solid var(--volume-thumb-border);
   box-shadow: 0 0 10px rgba(10, 180, 160, 0.45);
   cursor: pointer;
-  margin-top: -6px;
+  margin-top: -8px;
 }
 
 .volume-slider::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
   border-radius: 999px;
   background: linear-gradient(120deg, var(--volume-thumb-a), var(--volume-thumb-b));
   border: 2px solid var(--volume-thumb-border);

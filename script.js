@@ -347,6 +347,19 @@ if (playButtons.length > 0) {
     }
   };
 
+  const playWithContext = (audio) => {
+    const start = () => {
+      audio.play().catch((err) => {
+        if (err?.name !== "AbortError") stopAudio();
+      });
+    };
+    if (audioContext && audioContext.state !== "running") {
+      audioContext.resume().then(start).catch(start);
+    } else {
+      start();
+    }
+  };
+
   playButtons.forEach((button) => {
     button.addEventListener("click", () => {
       const src = button.dataset.audioSrc;
@@ -366,10 +379,7 @@ if (playButtons.length > 0) {
           return;
         }
         if (currentAudio && currentAudio.paused) {
-          if (audioContext && audioContext.state === "suspended") {
-            audioContext.resume().catch(() => {});
-          }
-          currentAudio.play().catch(() => stopAudio());
+          playWithContext(currentAudio);
           button.setAttribute("aria-pressed", "true");
           button.classList.add("is-playing");
           const resumeIcon = button.querySelector(".play-icon");
@@ -421,10 +431,6 @@ if (playButtons.length > 0) {
         }
       });
 
-      if (audioContext && audioContext.state === "suspended") {
-        audioContext.resume().catch(() => {});
-      }
-
       if (audioContext && gainNode) {
         try {
           mediaSource = audioContext.createMediaElementSource(audio);
@@ -434,11 +440,7 @@ if (playButtons.length > 0) {
         }
       }
 
-      audio.play().catch((err) => {
-        if (err?.name !== "AbortError") {
-          stopAudio();
-        }
-      });
+      playWithContext(audio);
     });
   });
 
