@@ -780,7 +780,6 @@ body[data-theme="iu"] .work-showcase .section-head h2 {
   box-shadow: var(--shadow);
   overflow: hidden;
   min-height: 360px;
-  aspect-ratio: 1 / 1;
   --glow-a: rgba(91, 182, 255, 0.4);
   --glow-b: rgba(194, 75, 255, 0.35);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -1008,6 +1007,12 @@ body[data-theme="iu"] .volume-label {
   -webkit-background-clip: text;
   background-clip: text;
   text-shadow: 0 0 10px rgba(153, 0, 0, 0.35), 0 0 14px rgba(106, 0, 0, 0.3);
+}
+
+@media (max-width: 1500px) {
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .feature-list {
