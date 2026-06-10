@@ -813,26 +813,14 @@ body[data-theme="iu"] .work-showcase .section-head h2 {
   z-index: 0;
 }
 
-.feature-card:nth-child(2) {
+.music-card {
   --glow-a: rgba(10, 180, 160, 0.35);
   --glow-b: rgba(26, 108, 186, 0.35);
 }
 
-.feature-card:nth-child(3) {
+.arcade-card {
   --glow-a: rgba(38, 141, 255, 0.4);
   --glow-b: rgba(50, 204, 255, 0.32);
-}
-
-.feature-card:nth-child(1) {
-  order: 2;
-}
-
-.feature-card:nth-child(2) {
-  order: 1;
-}
-
-.feature-card:nth-child(3) {
-  order: 3;
 }
 
 body[data-theme="iu"] .feature-card {
