@@ -823,6 +823,18 @@ body[data-theme="iu"] .work-showcase .section-head h2 {
   --glow-b: rgba(50, 204, 255, 0.32);
 }
 
+.feature-card:nth-child(1) {
+  order: 2;
+}
+
+.feature-card:nth-child(2) {
+  order: 1;
+}
+
+.feature-card:nth-child(3) {
+  order: 3;
+}
+
 body[data-theme="iu"] .feature-card {
   --glow-a: rgba(153, 0, 0, 0.35);
   --glow-b: rgba(237, 235, 235, 0.35);
@@ -1568,18 +1580,6 @@ body[data-theme="iu"] .end-links .link-sep {
   .feature-grid {
     display: flex;
     flex-direction: column;
-  }
-
-  .feature-grid .feature-card:nth-child(1) {
-    order: 2;
-  }
-
-  .feature-grid .feature-card:nth-child(2) {
-    order: 1;
-  }
-
-  .feature-grid .feature-card:nth-child(3) {
-    order: 3;
   }
 
   #about {
